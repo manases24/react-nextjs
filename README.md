@@ -1,5 +1,3 @@
-# NextJs: El framework de React para Prod
-
 <p align="center">
   <a href="https://nextjs.org/" target="blank"><img src="https://devtalles.com/images/next-github.png" width="300" alt="qwik Logo" /></a>
 </p>
