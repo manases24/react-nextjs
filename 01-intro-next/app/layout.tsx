@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   description: "Generated with love by Vercel",
 };
 
+// Higher-Order Components
+// Lo que pongo aqui va a impactar en todas las pages de mi app
 export default function RootLayout({
   children,
 }: Readonly<{
