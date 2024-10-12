@@ -15,9 +15,9 @@ export const Navbar = () => {
         <span>Home</span>
       </Link>
       <div className="flex flex-1"></div>
-      {navItems.map((navItem) => (
-        <Link key={navItem.path} className="mr-2" href={navItem.path}>
-          {navItem.text}
+      {navItems.map(({path, text}) => (
+        <Link key={path} className="mr-2" href={path}>
+          {text}
         </Link>
       ))}
     </nav>
