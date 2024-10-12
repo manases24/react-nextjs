@@ -1,3 +1,4 @@
+import { Navbar } from "@/components";
 import React from "react";
 
 interface AboutLayoutProps {
@@ -6,9 +7,12 @@ interface AboutLayoutProps {
 
 export default function AboutLayout({ children }: AboutLayoutProps) {
   return (
-    <div>
-      <h1>Hello Root Layout About</h1>
-      {children}
-    </div>
+   <>
+    <Navbar/>
+    <main className="flex flex-col items-center p-24">
+      <span className="text-lg">Hello, World!</span>
+      { children }
+    </main>
+   </>
   );
 }
