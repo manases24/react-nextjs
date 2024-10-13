@@ -1,4 +1,4 @@
-"use client";
+"use client"; // componente generado del lado del cliente
 
 import { useState } from "react";
 
