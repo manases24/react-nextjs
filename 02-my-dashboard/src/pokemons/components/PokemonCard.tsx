@@ -3,6 +3,7 @@ import Image from "next/image";
 import { IoHeartOutline } from "react-icons/io5";
 import { SimplePokemon } from "../interfaces/simple-pokemon";
 
+
 interface Props {
   pokemon: SimplePokemon;
 }
@@ -18,7 +19,7 @@ export const PokemonCard = ({ pokemon }: Props) => {
             width={100}
             height={100}
             alt={pokemon.name}
-            priority={false}
+            priority={false} // se pone cuando sabemos que las imgs seran cargadas bajo demanda
           />
 
           <p className="pt-2 text-lg font-semibold text-gray-50 capitalize">
