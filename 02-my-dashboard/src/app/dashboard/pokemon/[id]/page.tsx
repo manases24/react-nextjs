@@ -7,6 +7,7 @@ interface Props {
   params: { id: string };
 }
 
+// Genera la metadata dinamica de la pagina
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const { id, name } = await getPokemon(params.id);
