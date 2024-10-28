@@ -1,4 +1,4 @@
-"use-client"
+"use client";
 
 import { Provider } from "react-redux";
 import { store } from "./store";
@@ -8,5 +8,5 @@ interface Props {
 }
 
 export const Providers = ({ children }: Props) => {
-  return <Provider store={store}>providers</Provider>;
+  return <Provider store={store}>{children}</Provider>;
 };

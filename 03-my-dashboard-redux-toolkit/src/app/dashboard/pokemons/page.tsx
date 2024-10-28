@@ -1,7 +1,7 @@
 import { PokemonGrid, PokemonsReponse, SimplePokemon } from "@/pokemons";
 
 export const metadata = {
-  title: "151 Pokemons",
+  title: "151 Pokémons",
   description: "Ad minim sit cupidatat culpa consectetur.",
 };
 
