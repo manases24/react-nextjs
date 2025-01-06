@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 
 // Ayuda a Google para el SEO
 export const metadata: Metadata = {
- title: 'Pricing Page',
- description: 'Esta es la pagina de precios de mi servicio',
- keywords: ["Princing Page", "Manases", "Precios"]
+  title: "Pricing Page",
+  description: "Esta es la pagina de precios de mi servicio",
+  keywords: ["Princing Page", "Manases", "Precios"],
 };
 
 export default function PricingPage() {

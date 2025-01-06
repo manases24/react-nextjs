@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 
 // Higher-Order Components
 // Lo que pongo aqui va a impactar en todas las pages de mi app
+// Recibe un children
 export default function RootLayout({
   children,
 }: Readonly<{
