@@ -1,8 +1,7 @@
-
 export default function MainPage() {
   return (
     <div>
-      <h1>Hello Page Main</h1>
+      <h1>Jonas, Ing. en Electricidad</h1>
     </div>
   );
 }
