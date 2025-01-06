@@ -12,13 +12,27 @@ interface Props {
   value?: number;
 }
 
+interface CounterResponse {
+  method: string;
+  count: number;
+}
+
+const getAPICounter = async (): Promise<CounterResponse> => {
+  const data = await fetch("/api/counter").then((res) => res.json());
+  return data;
+};
+
 export const CartCounter = ({ value = 0 }: Props) => {
   const count = useAppSelector((state) => state.counter.count);
   const dispatch = useAppDispatch();
 
+  // useEffect(() => {
+  //   dispatch(initCounterState(value));
+  // }, [dispatch, value]);
+
   useEffect(() => {
-    dispatch(initCounterState(value));
-  }, [dispatch, value]);
+    getAPICounter().then(({ count }) => dispatch(initCounterState(count)));
+  }, [dispatch]);
 
   return (
     <>
