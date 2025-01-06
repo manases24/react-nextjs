@@ -1,5 +1,8 @@
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 
 export default function HomePage() {
-  redirect("/dashboard/main");
+
+  // redirect es una funcion para redireccionar
+  redirect('/dashboard/main');
+
 }
