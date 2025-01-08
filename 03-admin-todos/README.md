@@ -71,7 +71,6 @@ Si aún no has instalado Prisma en tu proyecto, usa el siguiente comando:
 ```bash
 npm install prisma @prisma/client
 
-npx prisma init
 ```
 
 #### 2.2. Generar cliente de Prisma
