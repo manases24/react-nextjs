@@ -1,17 +1,19 @@
-# Todo App with PostgreSQL and Docker
+# Todo App with PostgreSQL, Prisma, and Docker
 
-Este proyecto es una aplicación que utiliza PostgreSQL como base de datos y está configurado con Docker Compose para facilitar el desarrollo.
+Este proyecto es una aplicación que utiliza PostgreSQL como base de datos, Prisma como ORM, y está configurado con Docker Compose para facilitar el desarrollo.
 
 ## Prerrequisitos
 
 1. Tener instalado [Docker](https://www.docker.com/) y [Docker Compose](https://docs.docker.com/compose/).
-2. Crear un archivo `.env` con las siguientes variables de entorno:
+2. Tener instalado [Node.js](https://nodejs.org/) y [Prisma CLI](https://www.prisma.io/docs).
+3. Crear un archivo `.env` con las siguientes variables de entorno:
    ```env
    POSTGRES_USER=tu_usuario
    POSTGRES_PASSWORD=tu_contraseña
    POSTGRES_DB=tu_base_de_datos
    PGADMIN_DEFAULT_EMAIL=admin@example.com
    PGADMIN_DEFAULT_PASSWORD=admin
+   DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}
    ```
 
 ## Estructura del proyecto
@@ -20,7 +22,9 @@ Este proyecto es una aplicación que utiliza PostgreSQL como base de datos y est
 .
 ├── docker-compose.yml
 ├── .env
-├── postgres/    # Carpeta donde se almacenarán los datos persistentes de PostgreSQL
+├── prisma/
+│   ├── schema.prisma  # Archivo de esquema de Prisma
+├── postgres/          # Carpeta donde se almacenarán los datos persistentes de PostgreSQL
 └── README.md
 ```
 
@@ -36,6 +40,7 @@ POSTGRES_PASSWORD=tu_contraseña
 POSTGRES_DB=todo_app
 PGADMIN_DEFAULT_EMAIL=admin@example.com
 PGADMIN_DEFAULT_PASSWORD=admin
+DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}
 ```
 
 ### 2. Configurar permisos en la carpeta `postgres`
@@ -57,20 +62,41 @@ Para levantar PostgreSQL y pgAdmin, ejecuta:
 docker-compose up -d
 ```
 
-Esto hará lo siguiente:
+### 2. Configurar Prisma
 
-- Iniciar un contenedor para PostgreSQL.
-- Iniciar un contenedor para pgAdmin, una interfaz gráfica para administrar PostgreSQL.
+#### 2.1. Instalar dependencias de Prisma
 
-### 2. Verificar los contenedores en ejecución
-
-Comprueba que los contenedores estén corriendo:
+Si aún no has instalado Prisma en tu proyecto, usa el siguiente comando:
 
 ```bash
-docker ps
+npm install prisma @prisma/client
+
+npx prisma init
 ```
 
-Deberías ver dos contenedores en ejecución: `todos-db` y `pgadmin`.
+#### 2.2. Generar cliente de Prisma
+
+Asegúrate de que tu archivo `prisma/schema.prisma` esté configurado correctamente y ejecuta:
+
+```bash
+npx prisma generate
+```
+
+#### 2.3. Migrar la base de datos
+
+Si necesitas crear o actualizar la base de datos según el esquema de Prisma, ejecuta:
+
+```bash
+npx prisma migrate dev --name init
+```
+
+#### 2.4. Acceder a la interfaz de Prisma Studio (opcional)
+
+Para explorar y editar tus datos de forma visual, ejecuta:
+
+```bash
+npx prisma studio
+```
 
 ### 3. Acceder a pgAdmin
 
@@ -95,15 +121,10 @@ Esto detendrá los contenedores pero mantendrá los datos persistentes en la car
 
 ## Notas
 
-- Si necesitas conectarte directamente a PostgreSQL desde tu máquina local, utiliza:
-
-  - **Host**: `localhost`
-  - **Puerto**: `5432`
-  - **Usuario/Contraseña**: los definidos en tu archivo `.env`.
-
-- Si experimentas problemas, asegúrate de que los puertos `5432` (para PostgreSQL) y `5050` (para pgAdmin) no estén en uso por otras aplicaciones.
+- Si experimentas problemas con la conexión, asegúrate de que la variable `DATABASE_URL` esté correctamente configurada.
+- Prisma requiere que las migraciones sean aplicadas para reflejar los cambios en la base de datos.
 
 ## Futuras mejoras
 
-- Agregar un servicio para la aplicación principal (API o frontend).
-- Configurar scripts de inicialización de datos en PostgreSQL.
+- Agregar más servicios o microservicios según las necesidades del proyecto.
+- Configurar una herramienta de CI/CD para automatizar despliegues.
