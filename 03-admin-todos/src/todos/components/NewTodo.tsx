@@ -44,7 +44,7 @@ export const NewTodo = () => {
       <button
         onClick={() => deleteCompleted()}
         type="button"
-        className="flex items-center justify-center rounded px-4 py-2 text-slate-900 hover:bg-red-700 transition-all"
+        className="flex items-center justify-center rounded bg-sky-500 px-4 py-2 text-slate-900 hover:bg-red-700 transition-all"
       >
         <IoTrashOutline />
         <span className="ml-2">Borrar completados</span>
