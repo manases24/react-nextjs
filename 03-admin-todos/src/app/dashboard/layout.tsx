@@ -1,5 +1,5 @@
-import { Sidebar } from "@/components/Sidebar";
-import { TopMenu } from "@/components/TopMenu";
+// Admin Dashboard https://tailwindcomponents.com/component/dashboard-12
+import { Sidebar, TopMenu } from "@/components";
 
 export default function DashboardLayout({
   children,

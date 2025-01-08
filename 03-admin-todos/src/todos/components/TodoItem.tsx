@@ -1,8 +1,9 @@
 "use client";
 
 import { Todo } from "@prisma/client";
-import { IoCheckboxOutline, IoSquareOutline } from "react-icons/io5";
+
 import styles from "./TodoItem.module.css";
+import { IoCheckboxOutline, IoSquareOutline } from "react-icons/io5";
 
 interface Props {
   todo: Todo;

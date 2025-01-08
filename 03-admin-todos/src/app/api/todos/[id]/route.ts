@@ -1,14 +1,17 @@
-import { NextResponse, NextRequest } from "next/server";
-import { Todo } from "@prisma/client";
 import prisma from "@/lib/prisma";
-import { putSchema } from "../yup";
+import { Todo } from "@prisma/client";
+import { NextResponse, NextRequest } from "next/server";
+import * as yup from "yup";
 
 interface Segments {
-  params: { id: string };
+  params: {
+    id: string;
+  };
 }
 
 const getTodo = async (id: string): Promise<Todo | null> => {
   const todo = await prisma.todo.findFirst({ where: { id } });
+
   return todo;
 };
 
@@ -17,7 +20,7 @@ export async function GET(request: Request, { params }: Segments) {
 
   if (!todo) {
     return NextResponse.json(
-      { message: `Todo with id ${params.id} not found` },
+      { message: `Todo con id ${params.id} no exite` },
       { status: 404 }
     );
   }
@@ -25,12 +28,17 @@ export async function GET(request: Request, { params }: Segments) {
   return NextResponse.json(todo);
 }
 
+const putSchema = yup.object({
+  complete: yup.boolean().optional(),
+  description: yup.string().optional(),
+});
+
 export async function PUT(request: Request, { params }: Segments) {
   const todo = await getTodo(params.id);
 
   if (!todo) {
     return NextResponse.json(
-      { message: `Todo with id ${params.id} not found` },
+      { message: `Todo con id ${params.id} no exite` },
       { status: 404 }
     );
   }

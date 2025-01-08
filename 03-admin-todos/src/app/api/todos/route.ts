@@ -1,31 +1,38 @@
-import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
-import { postSchema } from "./yup";
+import { NextResponse, NextRequest } from "next/server";
+import * as yup from "yup";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const take = +(searchParams.get("take") ?? "10");
-  const skip = +(searchParams.get("take") ?? "0");
+  const take = Number(searchParams.get("take") ?? "10");
+  const skip = Number(searchParams.get("skip") ?? "0");
 
-  if (isNaN(take))
+  if (isNaN(take)) {
     return NextResponse.json(
-      { error: "Take debe ser un numero" },
+      { message: "Take tiene que ser un número" },
       { status: 400 }
     );
+  }
 
-  if (isNaN(skip))
+  if (isNaN(skip)) {
     return NextResponse.json(
-      { error: "Take debe ser un numero" },
+      { message: "Skip tiene que ser un número" },
       { status: 400 }
     );
+  }
 
   const todos = await prisma.todo.findMany({
-    skip: skip,
     take: take,
+    skip: skip,
   });
 
   return NextResponse.json(todos);
 }
+
+const postSchema = yup.object({
+  description: yup.string().required(),
+  complete: yup.boolean().optional().default(false),
+});
 
 export async function POST(request: Request) {
   try {
@@ -36,6 +43,14 @@ export async function POST(request: Request) {
     const todo = await prisma.todo.create({ data: { complete, description } });
 
     return NextResponse.json(todo);
+  } catch (error) {
+    return NextResponse.json(error, { status: 400 });
+  }
+}
+export async function DELETE(request: Request) {
+  try {
+    await prisma.todo.deleteMany({ where: { complete: true } });
+    return NextResponse.json("Borrados");
   } catch (error) {
     return NextResponse.json(error, { status: 400 });
   }
