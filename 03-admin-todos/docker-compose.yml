@@ -3,7 +3,8 @@ services:
   dev-db:
     image: postgres:16.1-alpine3.18
     ports:
-      - 5434:5432
+      - "5432:5432"
+    # hostname: c-todos
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -12,6 +13,18 @@ services:
       - ./postgres:/var/lib/postgresql/data
     networks:
       - freecodecamp
+
+  pgadmin:
+    image: dpage/pgadmin4:7.7
+    container_name: pgadmin
+    restart: always
+    ports:
+      - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: superman@google.com
+      PGADMIN_DEFAULT_PASSWORD: superman
+    depends_on:
+      - dev-db
 
 volumes:
   postgres:
