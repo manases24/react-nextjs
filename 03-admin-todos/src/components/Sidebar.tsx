@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
 import { CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
 import {
@@ -8,7 +9,10 @@ import {
   IoCalendarOutline,
   IoCheckboxOutline,
   IoListOutline,
+  IoPerson,
 } from "react-icons/io5";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 const menuItems = [
   {
@@ -33,12 +37,21 @@ const menuItems = [
   },
   {
     icon: <IoBasketOutline />,
-    title: 'Productos',
-    path: '/dashboard/products'
+    title: "Productos",
+    path: "/dashboard/products",
+  },
+  {
+    icon: <IoPerson />,
+    title: "Profile",
+    path: "/dashboard/profile",
   },
 ];
 
-export const Sidebar = () => {
+export const Sidebar = async () => {
+  const session = await getServerSession(authOptions);
+  const userName = session?.user?.name ?? "John Doe";
+  const avatar = session?.user?.image ?? "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c"
+  
   return (
     <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
       <div>
@@ -47,7 +60,7 @@ export const Sidebar = () => {
           <Link href="#" title="home">
             {/* Next/Image */}
             <Image
-              src="https://images.unsplash.com/photo-1736288002606-9db16875f180?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzMnx8fGVufDB8fHx8fA%3D%3D"
+              src={avatar}
               className="w-10 h-10 rounded-full"
               alt="tailus logo"
               width={150}
@@ -58,14 +71,14 @@ export const Sidebar = () => {
 
         <div className="mt-8 text-center">
           <Image
-            src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c"
+            src={avatar}
             width={150}
             height={150}
             alt=""
             className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28"
           />
           <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">
-            John Doe
+            {userName}
           </h5>
           <span className="hidden text-gray-400 lg:block">Admin</span>
         </div>

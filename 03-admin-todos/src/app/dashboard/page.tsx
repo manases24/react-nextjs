@@ -12,7 +12,11 @@ export default async function DashboardPage() {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <WidgetItem title="Usuario conectado - ServerSide">
-        <div>Dashboard content</div>
+        <div className="flex flex-col">
+          <span>{session.user?.name}</span>
+          <span>{session.user?.email}</span>
+          <span>{session.user?.image}</span>
+        </div>
       </WidgetItem>
     </div>
   );
