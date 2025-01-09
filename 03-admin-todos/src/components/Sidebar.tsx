@@ -4,6 +4,7 @@ import { CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
 import {
   IoAddCircle,
+  IoBasketOutline,
   IoCalendarOutline,
   IoCheckboxOutline,
   IoListOutline,
@@ -29,6 +30,11 @@ const menuItems = [
     icon: <IoAddCircle />,
     title: "Cookies",
     path: "/dashboard/cookies",
+  },
+  {
+    icon: <IoBasketOutline />,
+    title: 'Productos',
+    path: '/dashboard/products'
   },
 ];
 
