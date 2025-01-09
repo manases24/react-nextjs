@@ -17,8 +17,8 @@ const getTotalCount = (cart: { [id: string]: number }): number => {
   return items;
 };
 
-export const TopMenu = () => {
-  const cookieStore = cookies();
+export const TopMenu = async () => {
+  const cookieStore = await cookies();
   const cart = JSON.parse(cookieStore.get("cart")?.value ?? "{}");
 
   const totalItems = getTotalCount(cart);
