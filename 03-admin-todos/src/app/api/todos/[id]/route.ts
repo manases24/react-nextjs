@@ -1,7 +1,7 @@
-import prisma from "@/lib/prisma";
 import { Todo } from "@prisma/client";
 import { NextResponse, NextRequest } from "next/server";
-import * as yup from "yup";
+import prisma from "@/lib/prisma";
+import { putSchema } from "../yup";
 
 interface Segments {
   params: {
@@ -27,11 +27,6 @@ export async function GET(request: Request, { params }: Segments) {
 
   return NextResponse.json(todo);
 }
-
-const putSchema = yup.object({
-  complete: yup.boolean().optional(),
-  description: yup.string().optional(),
-});
 
 export async function PUT(request: Request, { params }: Segments) {
   const todo = await getTodo(params.id);
