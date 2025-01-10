@@ -5,7 +5,6 @@ import * as argon2 from "argon2";
 
 export const getUserSessionServer = async () => {
   const session = await getServerSession(authOptions);
-
   return session?.user;
 };
 
