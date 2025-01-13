@@ -1,20 +1,39 @@
 "use client";
 
-import NotFoundPage from "../not-found";
+import { initialData } from "@/seed/seed";
+
+import { PageNotFound, ProductGrid, Title } from "@/components";
+import { Category } from "@/interfaces";
 
 interface Props {
-  params: { id: string };
+  params: { id: Category };
 }
 
-export default function CategoryPage({ params }: Props) {
-  const { id } = params;
+const seedProduct = initialData.products;
 
-  if (id === "kids") {
-    return <NotFoundPage />;
+export default function CategoryIdPage({ params }: Props) {
+  const { id } = params;
+  const products = seedProduct.filter((product) => product.gender === id);
+
+  const labels: Record<Category, string> = {
+    men: "Hombres",
+    women: "Mujeres",
+    kid: "Niños",
+    unisex: "Unisex",
+  };
+
+  if (!labels[id]) {
+    return <PageNotFound />;
   }
+
   return (
-    <div>
-      <h1>Category Page</h1>
-    </div>
+    <>
+      <Title
+        className="mb-2"
+        title={`Articulos para ${labels[id]}`}
+        subtitle="Todos los productos"
+      />
+      <ProductGrid products={products} />
+    </>
   );
 }
