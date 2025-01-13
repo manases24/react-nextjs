@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   postgres-db:
-    image: postgres:15.3
+    image: postgres:16.1-alpine3.18
     restart: always
     environment:
       POSTGRES_USER: ${DB_USER}
@@ -12,3 +12,7 @@ services:
       - ./postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
+
+volumes:
+  postgres:
+    external: false
