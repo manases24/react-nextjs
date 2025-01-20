@@ -4,6 +4,7 @@ import { authenticate } from "@/actions";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { IoInformationOutline } from "react-icons/io5";
+import { LoginButton } from "./LoginButton";
 
 export const LoginForm = () => {
   const [state, dispatch] = useFormState(authenticate, undefined);
@@ -35,15 +36,13 @@ export const LoginForm = () => {
           <>
             <IoInformationOutline className="h-5 w-5 text-red-500" />
             <p className="text-sm text-red-500">
-              Credenciales no son correctas
+              Credenciales incorrectas
             </p>
           </>
         )}
       </div>
 
-      <button className="btn-primary" type="submit">
-        Ingresar
-      </button>
+      <LoginButton />
 
       {/* divisor l ine */}
       <div className="flex items-center my-5">
