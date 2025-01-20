@@ -3,11 +3,12 @@
 import { authenticate } from "@/actions";
 import Link from "next/link";
 import { useFormState } from "react-dom";
+import { IoInformationOutline } from "react-icons/io5";
 
 export const LoginForm = () => {
   const [state, dispatch] = useFormState(authenticate, undefined);
 
-  console.log({state})
+  console.log({ state });
 
   return (
     <form className="flex flex-col" action={dispatch}>
@@ -25,7 +26,24 @@ export const LoginForm = () => {
         name="password"
       />
 
-      <button className="btn-primary" type="submit">Ingresar</button>
+      <div
+        className="flex h-8 items-end space-x-1"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {state === "CredentialsSignin" && (
+          <>
+            <IoInformationOutline className="h-5 w-5 text-red-500" />
+            <p className="text-sm text-red-500">
+              Credenciales no son correctas
+            </p>
+          </>
+        )}
+      </div>
+
+      <button className="btn-primary" type="submit">
+        Ingresar
+      </button>
 
       {/* divisor l ine */}
       <div className="flex items-center my-5">
@@ -34,7 +52,7 @@ export const LoginForm = () => {
         <div className="flex-1 border-t border-gray-500"></div>
       </div>
 
-      <Link href="/auth/new-account" className="btn-secondary text-center">
+      <Link className="btn-secondary text-center" href="/auth/new-account">
         Crear una nueva cuenta
       </Link>
     </form>

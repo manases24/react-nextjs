@@ -1,36 +1,35 @@
-import { create } from "zustand";
-import { initialData } from "./seed";
 import prisma from "../lib/prisma";
+import { initialData } from "./seed";
 
+// Crea la semilla de datos en la DB
 async function main() {
-  // 1. Borrar registros previos
-  // await Promise.all( [
-  await prisma.productImage.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.category.deleteMany();
-  // ]);
+  // Paso 1: Borrar registros previos de las tablas
+  await Promise.all([
+    await prisma.user.deleteMany(),
+    await prisma.productImage.deleteMany(),
+    await prisma.product.deleteMany(),
+    await prisma.category.deleteMany(),
+  ]);
 
-  const { categories, products } = initialData;
+  // Paso 2: Insertar categorías y usuario
+  const { categories, products, users } = initialData;
 
-  //  Categorias
-  // {
-  //   name: 'Shirt'
-  // }
+  await prisma.user.createMany({
+    data: users,
+  });
+
   const categoriesData = categories.map((name) => ({ name }));
-
   await prisma.category.createMany({
     data: categoriesData,
   });
 
   const categoriesDB = await prisma.category.findMany();
-
-  const categoriesMap = categoriesDB.reduce((map, category) => {
+  const categoriesMap = categoriesDB.reduce((map, category: any) => {
     map[category.name.toLowerCase()] = category.id;
     return map;
-  }, {} as Record<string, string>); //<string=shirt, string=categoryID>
+  }, {} as Record<string, string>);
 
-  // Productos
-
+  // Paso 3: Insertar productos
   products.forEach(async (product) => {
     const { type, images, ...rest } = product;
 
@@ -52,7 +51,7 @@ async function main() {
     });
   });
 
-  console.log("Seed ejecutado correctamente");
+  console.log("Seed ejecution");
 }
 
 (() => {
