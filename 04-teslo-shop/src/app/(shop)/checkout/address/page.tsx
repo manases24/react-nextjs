@@ -43,7 +43,7 @@ export default function AddressPage() {
             <span>País</span>
             <select className="p-2 border rounded-md bg-gray-200">
               <option value="">[ Seleccione ]</option>
-              <option value="CRI">Costa Rica</option>
+              <option value="CRI">Argentina</option>
             </select>
           </div>
 

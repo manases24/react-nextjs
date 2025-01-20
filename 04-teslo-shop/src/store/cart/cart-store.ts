@@ -52,7 +52,7 @@ export const useCartStore = create<State>()(
       },
 
       addProductTocart: (product: CartProduct) => {
-        const { cart } = get();
+        const { cart } = get(); // recibe el state desde Zustand
 
         // 1. Revisar si el producto existe en el carrito con la talla seleccionada
         const productInCart = cart.some(
@@ -77,7 +77,7 @@ export const useCartStore = create<State>()(
       },
 
       updateProductQuantity: (product: CartProduct, quantity: number) => {
-        const { cart } = get();
+        const { cart } = get(); // recibe el state desde Zustand
 
         const updatedCartProducts = cart.map((item) => {
           if (item.id === product.id && item.size === product.size) {
@@ -90,7 +90,7 @@ export const useCartStore = create<State>()(
       },
 
       removeProduct: (product: CartProduct) => {
-        const { cart } = get();
+        const { cart } = get(); // recibe el state desde Zustand
         const updatedCartProducts = cart.filter(
           (item) => item.id !== product.id || item.size !== product.size
         );

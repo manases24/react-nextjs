@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Spinner } from "@heroui/spinner";
 import { useCartStore } from "@/store";
 import { QuantitySelector } from "@/components";
 
@@ -20,7 +21,7 @@ export const ProductsInCart = () => {
   });
 
   if (!loaded) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
 
   return (
