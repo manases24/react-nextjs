@@ -1,9 +1,10 @@
 "use client";
 
-import { QuantitySelector, SizeSelector } from "@/components";
-import { CartProduct, Product, Size } from "@/interfaces";
-import { useCartStore } from "@/store/cart/cart-store";
 import { useState } from "react";
+
+import { QuantitySelector, SizeSelector } from "@/components";
+import type { CartProduct, Product, Size } from "@/interfaces";
+import { useCartStore } from "@/store";
 
 interface Props {
   product: Product;
@@ -11,15 +12,16 @@ interface Props {
 
 export const AddToCart = ({ product }: Props) => {
   const addProductToCart = useCartStore((state) => state.addProductTocart);
+
   const [size, setSize] = useState<Size | undefined>();
   const [quantity, setQuantity] = useState<number>(1);
-  const [posted, setPosted] = useState<boolean>(false);
+  const [posted, setPosted] = useState(false);
 
   const addToCart = () => {
     setPosted(true);
+
     if (!size) return;
 
-    // add to cart
     const cartProduct: CartProduct = {
       id: product.id,
       slug: product.slug,
@@ -39,11 +41,12 @@ export const AddToCart = ({ product }: Props) => {
   return (
     <>
       {posted && !size && (
-        <span className="mt-2 text-red-700 text-sm bg-red-100 border-l-4 border-red-500 px-4 py-2 rounded-lg shadow-md">
-          Seleccionar el talle por favor*
+        <span className="mt-2 text-red-500 fade-in">
+          Debe de seleccionar una talla*
         </span>
       )}
 
+      {/* Selector de Tallas */}
       <SizeSelector
         selectedSize={size}
         availableSizes={product.sizes}
@@ -54,7 +57,7 @@ export const AddToCart = ({ product }: Props) => {
       <QuantitySelector quantity={quantity} onQuantityChanged={setQuantity} />
 
       {/* Button */}
-      <button className="btn-primary my-5" onClick={addToCart}>
+      <button onClick={addToCart} className="btn-primary my-5">
         Agregar al carrito
       </button>
     </>

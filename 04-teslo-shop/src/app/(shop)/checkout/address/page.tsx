@@ -1,7 +1,7 @@
 import Link from "next/link";
+
 import { Title } from "@/components";
 
-// Direccion del cliente para el delivery
 export default function AddressPage() {
   return (
     <div className="flex flex-col sm:justify-center sm:items-center mb-72 px-10 sm:px-0">
@@ -43,7 +43,7 @@ export default function AddressPage() {
             <span>País</span>
             <select className="p-2 border rounded-md bg-gray-200">
               <option value="">[ Seleccione ]</option>
-              <option value="CRI">Argentina</option>
+              <option value="CRI">Costa Rica</option>
             </select>
           </div>
 

@@ -1,4 +1,3 @@
-// Pagina para os admnistradores
 export default function AdminPage() {
   return (
     <div>

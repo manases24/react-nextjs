@@ -1,8 +1,9 @@
-import Link from "next/link";
-import { IoCardOutline } from "react-icons/io5";
+// https://tailwindcomponents.com/component/hoverable-table
 import { Title } from "@/components";
 
-// https://tailwindcomponents.com/component/hoverable-table
+import Link from "next/link";
+import { IoCardOutline } from "react-icons/io5";
+
 export default function OrdersPage() {
   return (
     <>

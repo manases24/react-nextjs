@@ -1,4 +1,4 @@
-import { titleFont } from "@/app/config/fonts";
+import { titleFont } from "@/config/fonts";
 import Link from "next/link";
 
 export default function LoginPage() {

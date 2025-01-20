@@ -1,7 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Title } from "@/components";
+
+import { QuantitySelector, Title } from "@/components";
 import { initialData } from "@/seed/seed";
+import Image from "next/image";
 
 const productsInCart = [
   initialData.products[0],
@@ -9,7 +10,6 @@ const productsInCart = [
   initialData.products[2],
 ];
 
-// Proceso de cierre de venta
 export default function CheckoutPage() {
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
@@ -84,7 +84,7 @@ export default function CheckoutPage() {
               <p className="mb-5">
                 {/* Disclaimer */}
                 <span className="text-xs">
-                  Al hacer clic en "Colocar orden", aceptas nuestros{" "}
+                  Al hacer clic en &quot;Colocar orden&quot;, aceptas nuestros{" "}
                   <a href="#" className="underline">
                     términos y condiciones
                   </a>{" "}

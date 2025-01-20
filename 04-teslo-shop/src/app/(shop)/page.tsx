@@ -12,12 +12,11 @@ interface Props {
 }
 
 export default async function Home({ searchParams }: Props) {
-  const page = searchParams.page ? +searchParams.page : 1;
+  const page = searchParams.page ? parseInt(searchParams.page) : 1;
 
   const { products, currentPage, totalPages } =
     await getPaginatedProductsWithImages({ page });
 
-  // Si no hay productos, redirige al Home
   if (products.length === 0) {
     redirect("/");
   }
@@ -25,7 +24,9 @@ export default async function Home({ searchParams }: Props) {
   return (
     <>
       <Title title="Tienda" subtitle="Todos los productos" className="mb-2" />
+
       <ProductGrid products={products} />
+
       <Pagination totalPages={totalPages} />
     </>
   );

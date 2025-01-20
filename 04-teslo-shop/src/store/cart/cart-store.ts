@@ -1,6 +1,6 @@
+import type { CartProduct } from "@/interfaces";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { CartProduct } from "@/interfaces";
 
 interface State {
   cart: CartProduct[];
@@ -20,7 +20,6 @@ interface State {
 
 export const useCartStore = create<State>()(
   persist(
-    // get permite tener el estado actual en zustand
     (set, get) => ({
       cart: [],
 

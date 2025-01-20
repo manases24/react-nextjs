@@ -1,5 +1,9 @@
-export const revalidate = 10080; // queda en cache 7 dias
+export const revalidate = 604800; //7 días
+import { Metadata, ResolvingMetadata } from "next";
+
 import { notFound } from "next/navigation";
+
+import { titleFont } from "@/config/fonts";
 import {
   ProductMobileSlideshow,
   ProductSlideshow,
@@ -7,9 +11,7 @@ import {
   SizeSelector,
   StockLabel,
 } from "@/components";
-import { titleFont } from "@/app/config/fonts";
 import { getProductBySlug } from "@/actions";
-import { Metadata, ResolvingMetadata } from "next";
 import { AddToCart } from "./ui/AddToCart";
 
 interface Props {
@@ -46,6 +48,7 @@ export async function generateMetadata(
 export default async function ProductBySlugPage({ params }: Props) {
   const { slug } = params;
   const product = await getProductBySlug(slug);
+  console.log(product);
 
   if (!product) {
     notFound();
@@ -73,12 +76,15 @@ export default async function ProductBySlugPage({ params }: Props) {
       {/* Detalles */}
       <div className="col-span-1 px-5">
         <StockLabel slug={product.slug} />
+
         <h1 className={` ${titleFont.className} antialiased font-bold text-xl`}>
           {product.title}
         </h1>
+
         <p className="text-lg mb-5">${product.price}</p>
 
-        <AddToCart product={product}/>
+        <AddToCart product={product} />
+
         {/* Descripción */}
         <h3 className="font-bold text-sm">Descripción</h3>
         <p className="font-light">{product.description}</p>
