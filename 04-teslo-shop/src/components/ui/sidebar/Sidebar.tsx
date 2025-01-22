@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import clsx from "clsx";
 import {
   IoCloseOutline,
@@ -14,10 +15,14 @@ import {
 } from "react-icons/io5";
 
 import { useUIStore } from "@/store";
+import { logout } from "@/actions";
 
 export const Sidebar = () => {
   const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
   const closeMenu = useUIStore((state) => state.closeSideMenu);
+
+  const { data: session } = useSession();
+  const isAutenthicated = !!session?.user;
 
   return (
     <div>
@@ -62,8 +67,9 @@ export const Sidebar = () => {
         {/* Menú */}
 
         <Link
-          href="/"
           className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+          href="/profile"
+          onClick={() => closeMenu()}
         >
           <IoPersonOutline size={30} />
           <span className="ml-3 text-xl">Perfil</span>
@@ -77,21 +83,26 @@ export const Sidebar = () => {
           <span className="ml-3 text-xl">Ordenes</span>
         </Link>
 
-        <Link
-          href="/"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-        >
-          <IoLogInOutline size={30} />
-          <span className="ml-3 text-xl">Ingresar</span>
-        </Link>
+        {isAutenthicated && (
+          <Link
+            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+            href="/"
+            onClick={() => logout()}
+          >
+            <IoLogOutOutline size={30} />
+            <span className="ml-3 text-xl">Salir</span>
+          </Link>
+        )}
 
-        <Link
-          href="/"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-        >
-          <IoLogOutOutline size={30} />
-          <span className="ml-3 text-xl">Salir</span>
-        </Link>
+        {!isAutenthicated && (
+          <Link
+            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+            href="/auth/login"
+          >
+            <IoLogInOutline size={30} />
+            <span className="ml-3 text-xl">Ingresar</span>
+          </Link>
+        )}
 
         {/* Line Separator */}
         <div className="w-full h-px bg-gray-200 my-10" />

@@ -1,15 +1,24 @@
 "use client";
 
-import { authenticate } from "@/actions";
-import Link from "next/link";
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { IoInformationOutline } from "react-icons/io5";
+import Link from "next/link";
 import { LoginButton } from "./LoginButton";
+import { authenticate } from "@/actions";
 
 export const LoginForm = () => {
   const [state, dispatch] = useFormState(authenticate, undefined);
 
   console.log({ state });
+
+  useEffect(() => {
+    if (state === "Success") {
+      // redireccionar
+      // router.replace('/');
+      window.location.replace("/");
+    }
+  }, [state]);
 
   return (
     <form className="flex flex-col" action={dispatch}>
@@ -33,12 +42,12 @@ export const LoginForm = () => {
         aria-atomic="true"
       >
         {state === "CredentialsSignin" && (
-          <>
+          <div className="flex flex-row mb-2">
             <IoInformationOutline className="h-5 w-5 text-red-500" />
             <p className="text-sm text-red-500">
-              Credenciales incorrectas
+              Credenciales no son correctas
             </p>
-          </>
+          </div>
         )}
       </div>
 
