@@ -69,7 +69,7 @@ export const RegisterForm = () => {
           "border-red-500": errors.password,
         })}
         type="password"
-        {...register("password", { required: true, minLength: 6 })}
+        {...register("password", { required: true, minLength: 8 })}
       />
 
       <span className="text-red-500">{errorMessage} </span>

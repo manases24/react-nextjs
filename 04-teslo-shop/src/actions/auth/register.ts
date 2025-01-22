@@ -1,7 +1,7 @@
 "use server";
 
-import prisma from "@/lib/prisma";
 import bcryptjs from "bcryptjs";
+import prisma from "@/lib/prisma";
 
 export const registerUser = async (
   name: string,
