@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth.config";
 import { Title } from "@/components";
+import { ShowJson } from "./ui/ShowJson";
 
 export default async function ProfilePage() {
-  // session del usuario
+  // Obtén la sesión del usuario
   const session = await auth();
 
   if (!session?.user) {
@@ -36,12 +37,7 @@ export default async function ProfilePage() {
             <span className="font-medium">Role:</span> {role || "Usuario"}
           </p>
         </div>
-        <div className="bg-gray-100 p-4">
-          <h4 className="text-gray-700 font-medium">Datos JSON:</h4>
-          <pre className="bg-gray-800 text-gray-200 text-sm p-4 rounded-lg overflow-x-auto">
-            {JSON.stringify(session.user, null, 2)}
-          </pre>
-        </div>
+        <ShowJson session={session} />
       </div>
     </div>
   );
