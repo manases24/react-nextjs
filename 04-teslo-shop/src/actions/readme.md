@@ -1,32 +1,51 @@
-# Server Actions en Next.js 15: Ejemplo Sencillo 🚀
+# Formulario con Server Actions en Next.js 15
 
-Las Server Actions en Next.js 15 son una forma de escribir funciones que se ejecutan directamente en el servidor, pero que se llaman desde el cliente (tu navegador) de manera muy sencilla.
-
-Con ellas, puedes manejar cosas como guardar datos en una base de datos, llamar a una API externa o realizar tareas que no quieres que pasen en el cliente, todo sin preocuparte tanto por configurar un API tradicional (como con `fetch` o `axios`).
-
-### Ventajas clave:
-
-- **Facilidad de uso:** No necesitas crear un endpoint separado (como en una API REST). Simplemente defines tu función en el servidor y la llamas.
-- **Seguridad:** Como se ejecutan en el servidor, puedes manejar lógica o datos sensibles sin exponerlos al cliente.
-- **Optimización:** Next.js optimiza la comunicación entre el cliente y el servidor.
+Este proyecto muestra cómo usar **Server Actions** en Next.js 15 con un ejemplo sencillo de un formulario que guarda datos de usuario (username y country) y realiza una llamada a la API de la Pokédex.
 
 ---
 
-## Ejemplo sencillo: Formulario y llamada a la Pokédex
+## ¿Qué son las Server Actions?
 
-En este ejemplo, el usuario ingresa su `username` y `country` en un formulario. Al enviarlo:
+Las **Server Actions** en Next.js 15 son funciones que se ejecutan directamente en el servidor, pero que puedes llamar desde el cliente (tu navegador) como si fueran funciones normales. Esto simplifica mucho el manejo de lógica del lado del servidor.
 
-1. Se guarda esa información.
-2. Se llama a la API de la Pokédex para obtener información de un Pokémon (en este caso, **Pikachu**).
-3. Se muestran los resultados en pantalla.
+### **Ventajas principales:**
+
+1. **Facilidad de uso:** No necesitas crear rutas API manualmente.
+2. **Seguridad:** Como se ejecutan en el servidor, puedes manejar lógica o datos sensibles sin exponerlos al cliente.
+3. **Optimización:** Next.js optimiza la comunicación entre el cliente y el servidor.
 
 ---
 
-### Paso 1: Crear la Server Action
+## Ejemplo del proyecto
 
-#### Archivo: `app/actions.ts`
+Este proyecto incluye:
 
-```typescript
+- Un formulario donde el usuario ingresa su `username` y `country`.
+- Una **Server Action** que guarda estos datos y llama a la API de la Pokédex para obtener información de Pikachu.
+
+### **Estructura del proyecto:**
+
+```
+.
+├── app/
+│   ├── actions.ts       # Contiene la Server Action
+│   ├── page.tsx         # Página principal con el formulario
+│
+├── public/
+├── styles/
+├── package.json
+├── tsconfig.json
+├── next.config.js
+└── ...
+```
+
+---
+
+### **1. Archivo `app/actions.ts`**
+
+Aquí definimos la Server Action que maneja la lógica:
+
+```ts
 // app/actions.ts
 export async function saveUserAndFetchPokemon(data: FormData) {
   // Leer datos del formulario
@@ -52,18 +71,11 @@ export async function saveUserAndFetchPokemon(data: FormData) {
 }
 ```
 
-Esta función:
-
-- **Recibe** los datos del formulario.
-- Simula guardar el `username` y `country` en la base de datos.
-- Llama a la API de la Pokédex para obtener información de Pikachu.
-- **Devuelve** los datos del usuario y del Pokémon.
-
 ---
 
-### Paso 2: Crear el formulario en el cliente
+### **2. Archivo `app/page.tsx`**
 
-#### Archivo: `app/page.tsx`
+Este archivo contiene el formulario y llama a la Server Action:
 
 ```tsx
 "use client";
@@ -110,29 +122,48 @@ export default function Home() {
 }
 ```
 
-Este componente:
+---
 
-- Crea un formulario donde el usuario ingresa `username` y `country`.
-- Llama a la Server Action al enviar el formulario.
-- Muestra los datos retornados (usuario y Pokémon).
+### **3. ¿Qué es un handler route y en qué se diferencia de las Server Actions?**
+
+#### **¿Qué es un handler route?**
+
+Los **handler routes** son rutas API tradicionales que defines en el backend de tu aplicación Next.js. Sirven para manejar solicitudes HTTP (como `GET`, `POST`, `PUT`, `DELETE`, etc.) y devolver respuestas al cliente. Se definen en la carpeta `/app/api` y funcionan como endpoints de una API REST.
+
+##### **Ejemplo de handler route:**
+
+Archivo: `app/api/pokemon/route.ts`
+
+```ts
+import { NextResponse } from "next/server";
+
+export async function GET(request: Request) {
+  const pokemonResponse = await fetch(
+    "https://pokeapi.co/api/v2/pokemon/pikachu"
+  );
+  const pokemonData = await pokemonResponse.json();
+
+  return NextResponse.json({
+    pokemon: pokemonData.name,
+    pokemonType: pokemonData.types.map((t: any) => t.type.name).join(", "),
+  });
+}
+```
+
+Aquí estás creando un endpoint (`/api/pokemon`) que devuelve información de Pikachu.
 
 ---
 
-### Resultado esperado
+### **Diferencias clave entre handler routes y Server Actions**
 
-Cuando llenas el formulario y lo envías, deberías ver algo como esto:
-
-```
-Usuario: Ash
-País: Japón
-Pokémon: pikachu
-Tipo de Pokémon: electric
-```
+| **Aspecto**             | **Handler Routes**                                                         | **Server Actions**                                                                             |
+| ----------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Definición**          | Funciones que se ejecutan en el servidor para manejar solicitudes HTTP.    | Funciones que también se ejecutan en el servidor pero se llaman directamente desde el cliente. |
+| **Uso**                 | Ideal para crear endpoints de una API REST.                                | Ideal para manejar lógica backend sin necesidad de crear un endpoint separado.                 |
+| **Forma de llamar**     | Se utiliza `fetch` o librerías HTTP en el cliente para hacer la solicitud. | Se llaman directamente como funciones en el código cliente.                                    |
+| **Seguridad**           | Igual de segura, pero requiere manejar headers y permisos manualmente.     | Abstrae la comunicación cliente-servidor, haciendo el flujo más sencillo.                      |
+| **Configuración extra** | Necesitas definir rutas y manejar la comunicación explícitamente.          | Simplifica tareas comunes como guardar datos o llamar APIs externas.                           |
 
 ---
 
-### Resumen
-
-1. **Server Actions** te permiten escribir funciones que corren en el servidor pero que puedes llamar desde el cliente.
-2. Son seguras y simplifican el manejo de datos sensibles o llamadas a APIs externas.
-3. Este ejemplo muestra lo fácil que es combinar formularios con lógica del servidor usando Next.js 15.
+¡Listo! Ahora puedes explorar el funcionamiento de las Server Actions y los handler routes en Next.js 15.
