@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
-import { Country } from "@/interfaces";
-import { useAddressStore } from "@/store";
 
-interface FormInputs {
+import type { Address, Country } from "@/interfaces";
+import { useAddressStore } from "@/store";
+import { deleteUserAddress, setUserAddress } from "@/actions";
+
+type FormInputs = {
   firstName: string;
   lastName: string;
   address: string;
@@ -16,20 +20,29 @@ interface FormInputs {
   country: string;
   phone: string;
   rememberAddress: boolean;
-}
+};
 
 interface Props {
   countries: Country[];
+  userStoredAddress?: Partial<Address>;
 }
 
-export const AddressForm = ({ countries }: Props) => {
+export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
     formState: { isValid },
     reset,
   } = useForm<FormInputs>({
-    defaultValues: {},
+    defaultValues: {
+      ...(userStoredAddress as any),
+      rememberAddress: false,
+    },
+  });
+
+  const { data: session } = useSession({
+    required: true,
   });
 
   const setAddress = useAddressStore((state) => state.setAddress);
@@ -37,18 +50,27 @@ export const AddressForm = ({ countries }: Props) => {
 
   useEffect(() => {
     if (address.firstName) {
-      reset(address); // carga la data en el form
+      reset(address);
     }
   }, []);
 
-  const onSubmit = (data: FormInputs) => {
+  const onSubmit = async (data: FormInputs) => {
     setAddress(data);
+    const { rememberAddress, ...restAddress } = data;
+
+    if (rememberAddress) {
+      await setUserAddress(restAddress, session!.user.id);
+    } else {
+      await deleteUserAddress(session!.user.id);
+    }
+
+    router.push("/checkout");
   };
 
   return (
     <form
-      className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2"
       onSubmit={handleSubmit(onSubmit)}
+      className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2"
     >
       <div className="flex flex-col mb-2">
         <span>Nombres</span>
@@ -129,15 +151,16 @@ export const AddressForm = ({ countries }: Props) => {
       </div>
 
       <div className="flex flex-col mb-2 sm:mt-1">
-        <div className="inline-flex items-center mb-10">
+        <div className="inline-flex items-center mb-10 ">
           <label
             className="relative flex cursor-pointer items-center rounded-full p-3"
             htmlFor="checkbox"
           >
             <input
               type="checkbox"
-              className="border-gray-500 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-pink-500 checked:bg-pink-500 checked:before:bg-pink-500 hover:before:opacity-10"
+              className="border-gray-500 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-blue-500 checked:bg-blue-500 checked:before:bg-blue-500 hover:before:opacity-10"
               id="checkbox"
+              {...register("rememberAddress")}
             />
             <div className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
               <svg
@@ -156,8 +179,10 @@ export const AddressForm = ({ countries }: Props) => {
               </svg>
             </div>
           </label>
-          <span>Recordar dirección?</span>
+
+          <span>¿Recordar dirección?</span>
         </div>
+
         <button
           disabled={!isValid}
           // href="/checkout"
