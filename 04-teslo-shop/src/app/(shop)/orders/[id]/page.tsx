@@ -1,20 +1,10 @@
-
-
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import clsx from "clsx";
 import { IoCardOutline } from "react-icons/io5";
 import { Title } from "@/components";
-import { initialData } from "@/seed/seed";
-
-import { redirect } from "next/navigation";
 import { currencyFormat } from "@/utils";
 import { getOrderById } from "@/actions";
-
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-];
 
 interface Props {
   params: {
