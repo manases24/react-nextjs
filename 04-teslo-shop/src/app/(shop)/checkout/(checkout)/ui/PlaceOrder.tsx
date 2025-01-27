@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { Spinner } from "@heroui/spinner";
 import { useAddressStore, useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
-
 import { placeOrder } from "@/actions";
 
+
 export const PlaceOrder = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -19,6 +20,7 @@ export const PlaceOrder = () => {
     state.getSummaryInformation()
   );
   const cart = useCartStore((state) => state.cart);
+  const clearCart = useCartStore( state => state.clearCart );
 
   useEffect(() => {
     setLoaded(true);
@@ -44,7 +46,10 @@ export const PlaceOrder = () => {
       setErrorMessage(resp.message);
       return;
     }
-    setIsPlacingOrder(false);
+    
+    // Si todo sale bien
+    clearCart();
+    router.replace('/orders/' + resp.order?.id );
   };
 
   return (
