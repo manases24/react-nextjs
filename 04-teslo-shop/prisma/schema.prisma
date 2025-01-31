@@ -125,6 +125,8 @@ model Order {
 
   OrderItem    OrderItem[]
   OrderAddress OrderAddress?
+
+  transactionId String? // Id que va a dar el proveedor de pago (MERCADO PAGO, PAYPAL, ETC)
 }
 
 model OrderItem {
