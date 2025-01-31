@@ -9,6 +9,11 @@ interface Props {
   users: User[];
 }
 
+const roles = [
+  { id: crypto.randomUUID(), value: "admin", label: "Admin" },
+  { id: crypto.randomUUID(), value: "user", label: "User" },
+];
+
 export const UsersTable = ({ users }: Props) => {
   return (
     <>
@@ -49,12 +54,15 @@ export const UsersTable = ({ users }: Props) => {
               </td>
               <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 <select
+                  className="text-sm w-full p-2 text-gray-900"
                   value={user.role}
                   onChange={(e) => changeUserRole(user.id, e.target.value)}
-                  className="text-sm w-full p-2 text-gray-900"
                 >
-                  <option value="admin">Admin</option>
-                  <option value="user">User</option>
+                  {roles.map((role) => (
+                    <option key={role.id} value={role.value}>
+                      {role.label}
+                    </option>
+                  ))}
                 </select>
               </td>
             </tr>
