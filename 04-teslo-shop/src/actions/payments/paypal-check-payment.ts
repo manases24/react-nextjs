@@ -61,7 +61,7 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
 
 const getPayPalBearerToken = async (): Promise<string | null> => {
   const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-  const PAYPAL_SECRET = process.env.PAYPAL_SECRET;
+  const PAYPAL_SECRET = process.env.PAYPAL_SECRET_KEY;
   const oauth2Url = process.env.PAYPAL_OAUTH_URL ?? "";
 
   const base64Token = Buffer.from(
