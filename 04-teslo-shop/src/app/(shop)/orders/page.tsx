@@ -1,12 +1,13 @@
 export const revalidate = 0;
 
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { IoCardOutline } from "react-icons/io5";
+// https://tailwindcomponents.com/component/hoverable-table
 import { getOrdersByUser } from "@/actions";
 import { Title } from "@/components";
 
-// https://tailwindcomponents.com/component/hoverable-table
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { IoCardOutline } from "react-icons/io5";
+
 export default async function OrdersPage() {
   const { ok, orders = [] } = await getOrdersByUser();
 

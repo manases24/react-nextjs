@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Image from "next/image";
+
 import { getOrderById } from "@/actions/order/get-order-by-id";
 import { currencyFormat } from "@/utils";
 import { OrderStatus, PayPalButton, Title } from "@/components";
@@ -12,6 +13,8 @@ interface Props {
 
 export default async function OrdersByIdPage({ params }: Props) {
   const { id } = params;
+
+  // Todo: Llamar el server action
 
   const { ok, order } = await getOrderById(id);
 

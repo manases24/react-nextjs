@@ -1,6 +1,6 @@
 "use server";
-
 import prisma from "@/lib/prisma";
+
 import { auth } from "@/auth.config";
 import type { Address, Size } from "@/interfaces";
 
@@ -26,7 +26,7 @@ export const placeOrder = async (
   }
 
   // Obtener la información de los productos
-  // Nota: podemos llevar 2+ productos con el mismo ID
+  // Nota: recuerden que podemos llevar 2+ productos con el mismo ID
   const products = await prisma.product.findMany({
     where: {
       id: {
@@ -36,10 +36,7 @@ export const placeOrder = async (
   });
 
   // Calcular los montos // Encabezado
-  const itemsInOrder = productIds.reduce(
-    (count, product) => count + product.quantity,
-    0
-  );
+  const itemsInOrder = productIds.reduce((count, p) => count + p.quantity, 0);
 
   // Los totales de tax, subtotal, y total
   const { subTotal, tax, total } = productIds.reduce(
@@ -86,7 +83,8 @@ export const placeOrder = async (
       });
 
       const updatedProducts = await Promise.all(updatedProductsPromises);
-      //   Verificar valores negativos en las existencia = no hay stock
+
+      // Verificar valores negativos en las existencia = no hay stock
       updatedProducts.forEach((product) => {
         if (product.inStock < 0) {
           throw new Error(`${product.title} no tiene inventario suficiente`);
@@ -101,6 +99,7 @@ export const placeOrder = async (
           subTotal: subTotal,
           tax: tax,
           total: total,
+
           OrderItem: {
             createMany: {
               data: productIds.map((p) => ({
@@ -117,6 +116,7 @@ export const placeOrder = async (
       });
 
       // Validar, si el price es cero, entonces, lanzar un error
+
       // 3. Crear la direccion de la orden
       // Address
       const { country, ...restAddress } = address;
@@ -127,12 +127,14 @@ export const placeOrder = async (
           orderId: order.id,
         },
       });
+
       return {
         updatedProducts: updatedProducts,
         order: order,
         orderAddress: orderAddress,
       };
     });
+
     return {
       ok: true,
       order: prismaTx.order,

@@ -1,10 +1,5 @@
-export const revalidate = 0;
-
-import Image from "next/image";
-import Link from "next/link";
-import { getPaginatedProductsWithImages, getProductBySlug } from "@/actions";
-import { Pagination, ProductImage, Title } from "@/components";
-import { currencyFormat } from "@/utils";
+import { getCategories, getProductBySlug } from "@/actions";
+import { Title } from "@/components";
 import { redirect } from "next/navigation";
 import { ProductForm } from "./ui/ProductForm";
 
@@ -14,12 +9,15 @@ interface Props {
   };
 }
 
-export default async function AdminProductBySlugPage({ params }: Props) {
+export default async function ProductPage({ params }: Props) {
   const { slug } = params;
 
-  const product = await getProductBySlug(slug);
+  const [product, categories] = await Promise.all([
+    getProductBySlug(slug),
+    getCategories(),
+  ]);
 
-  if (!product) {
+  if (!product && slug !== "new") {
     redirect("/admin/products");
   }
 
@@ -28,7 +26,8 @@ export default async function AdminProductBySlugPage({ params }: Props) {
   return (
     <>
       <Title title={title} />
-      <ProductForm product={product}/>
+
+      <ProductForm product={product ?? {}} categories={categories} />
     </>
   );
 }

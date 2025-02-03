@@ -44,7 +44,7 @@ export default async function GenderByPage({ params, searchParams }: Props) {
   return (
     <>
       <Title
-        title={`Artículos ${labels[gender]}`}
+        title={`Artículos de ${labels[gender]}`}
         subtitle="Todos los productos"
         className="mb-2"
       />

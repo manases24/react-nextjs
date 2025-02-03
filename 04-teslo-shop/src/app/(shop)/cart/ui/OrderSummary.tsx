@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Spinner } from "@heroui/spinner";
 import { useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export const OrderSummary = () => {
   const router = useRouter();
@@ -24,7 +23,7 @@ export const OrderSummary = () => {
     }
   }, [itemsInCart, loaded]);
 
-  if (!loaded) return <Spinner />;
+  if (!loaded) return <p>Loading...</p>;
 
   return (
     <div className="grid grid-cols-2">

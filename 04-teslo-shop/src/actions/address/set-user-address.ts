@@ -1,6 +1,6 @@
 "use server";
 
-import { Address } from "@/interfaces";
+import type { Address } from "@/interfaces";
 import prisma from "@/lib/prisma";
 
 export const setUserAddress = async (address: Address, userId: string) => {
@@ -40,7 +40,6 @@ const createOrReplaceAddress = async (address: Address, userId: string) => {
       postalCode: address.postalCode,
     };
 
-    // si no existe la direccion, lo creamos
     if (!storedAddress) {
       const newAddress = await prisma.userAddress.create({
         data: addressToSave,
@@ -49,7 +48,6 @@ const createOrReplaceAddress = async (address: Address, userId: string) => {
       return newAddress;
     }
 
-    // si la direccion existe, lo actualizamos
     const updatedAddress = await prisma.userAddress.update({
       where: { userId },
       data: addressToSave,

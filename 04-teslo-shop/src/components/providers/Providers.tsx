@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-import { SessionProvider } from "next-auth/react";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { SessionProvider } from "next-auth/react";
 
 interface Props {
   children: React.ReactNode;

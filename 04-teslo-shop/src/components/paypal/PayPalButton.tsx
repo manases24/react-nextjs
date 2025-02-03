@@ -4,10 +4,10 @@ import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import {
   CreateOrderData,
   CreateOrderActions,
-  OnApproveData,
   OnApproveActions,
+  OnApproveData,
 } from "@paypal/paypal-js";
-import { setTransactionId, paypalCheckPayment } from "@/actions";
+import { paypalCheckPayment, setTransactionId } from "@/actions";
 
 interface Props {
   orderId: string;
@@ -17,7 +17,7 @@ interface Props {
 export const PayPalButton = ({ orderId, amount }: Props) => {
   const [{ isPending }] = usePayPalScriptReducer();
 
-  const roundedAmount = Math.round(amount * 100) / 100;
+  const rountedAmount = Math.round(amount * 100) / 100; //123.23
 
   if (isPending) {
     return (
@@ -28,18 +28,16 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
     );
   }
 
-  async function createOrder(
+  const createOrder = async (
     data: CreateOrderData,
     actions: CreateOrderActions
-  ): Promise<string> {
+  ): Promise<string> => {
     const transactionId = await actions.order.create({
-      intent: "CAPTURE",
       purchase_units: [
         {
           invoice_id: orderId,
           amount: {
-            currency_code: "USD",
-            value: roundedAmount.toString(),
+            value: `${rountedAmount}`,
           },
         },
       ],
@@ -47,17 +45,18 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
 
     const { ok } = await setTransactionId(orderId, transactionId);
     if (!ok) {
-      throw new Error("No se pudo actualizar el id de la transacción");
+      throw new Error("No se pudo actualizar la orden");
     }
 
     return transactionId;
-  }
+  };
 
-  async function onApprove(data: OnApproveData, actions: OnApproveActions) {
+  const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
     const details = await actions.order?.capture();
     if (!details) return;
-    await paypalCheckPayment(details.id ?? "");
-  }
+
+    await paypalCheckPayment(details.id);
+  };
 
   return (
     <div className="relative z-0">

@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import clsx from "clsx";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
-import clsx from "clsx";
-import { login, registerUser } from "@/actions";
 
-interface FormInputs {
+import { login, registerUser } from "@/actions";
+import { useState } from "react";
+
+type FormInputs = {
   name: string;
   email: string;
   password: string;
-}
+};
 
 export const RegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -39,10 +40,10 @@ export const RegisterForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
       {/* {
-          errors.name?.type === 'required' && (
-            <span className="text-red-500">* El nombre es obligatorio</span>
-          )
-        } */}
+        errors.name?.type === 'required' && (
+          <span className="text-red-500">* El nombre es obligatorio</span>
+        )
+      } */}
 
       <label htmlFor="email">Nombre completo</label>
       <input
@@ -69,7 +70,7 @@ export const RegisterForm = () => {
           "border-red-500": errors.password,
         })}
         type="password"
-        {...register("password", { required: true, minLength: 8 })}
+        {...register("password", { required: true, minLength: 6 })}
       />
 
       <span className="text-red-500">{errorMessage} </span>

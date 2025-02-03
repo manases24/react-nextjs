@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import Image from "next/image";
-import { Spinner } from "@heroui/spinner";
+
 import { useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
 
@@ -15,7 +16,7 @@ export const ProductsInCart = () => {
   });
 
   if (!loaded) {
-    return <Spinner />;
+    return <p>Loading...</p>;
   }
 
   return (

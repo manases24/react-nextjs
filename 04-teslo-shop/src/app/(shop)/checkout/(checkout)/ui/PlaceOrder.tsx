@@ -3,11 +3,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import { Spinner } from "@heroui/spinner";
+
+import { placeOrder } from "@/actions";
 import { useAddressStore, useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
-import { placeOrder } from "@/actions";
-
 
 export const PlaceOrder = () => {
   const router = useRouter();
@@ -16,22 +15,20 @@ export const PlaceOrder = () => {
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   const address = useAddressStore((state) => state.address);
+
   const { itemsInCart, subTotal, tax, total } = useCartStore((state) =>
     state.getSummaryInformation()
   );
   const cart = useCartStore((state) => state.cart);
-  const clearCart = useCartStore( state => state.clearCart );
+  const clearCart = useCartStore((state) => state.clearCart);
 
   useEffect(() => {
     setLoaded(true);
   }, []);
 
-  if (!loaded) {
-    return <Spinner />;
-  }
-
   const onPlaceOrder = async () => {
     setIsPlacingOrder(true);
+    // await sleep(2);
 
     const productsToOrder = cart.map((product) => ({
       productId: product.id,
@@ -39,18 +36,22 @@ export const PlaceOrder = () => {
       size: product.size,
     }));
 
-    // Server actions
+    //! Server Action
     const resp = await placeOrder(productsToOrder, address);
     if (!resp.ok) {
       setIsPlacingOrder(false);
       setErrorMessage(resp.message);
       return;
     }
-    
-    // Si todo sale bien
+
+    //* Todo salio bien!
     clearCart();
-    router.replace('/orders/' + resp.order?.id );
+    router.replace("/orders/" + resp.order?.id);
   };
+
+  if (!loaded) {
+    return <p>Cargando...</p>;
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-xl p-7">
@@ -109,11 +110,12 @@ export const PlaceOrder = () => {
         <p className="text-red-500">{errorMessage}</p>
 
         <button
+          // href="/orders/123"
+          onClick={onPlaceOrder}
           className={clsx({
             "btn-primary": !isPlacingOrder,
             "btn-disabled": isPlacingOrder,
           })}
-          onClick={onPlaceOrder}
         >
           Colocar orden
         </button>

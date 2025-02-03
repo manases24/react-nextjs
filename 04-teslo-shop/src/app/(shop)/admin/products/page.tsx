@@ -1,10 +1,14 @@
 export const revalidate = 0;
 
-import Image from "next/image";
-import Link from "next/link";
-import { getPaginatedProductsWithImages } from "@/actions";
+// https://tailwindcomponents.com/component/hoverable-table
+import { getPaginatedOrders, getPaginatedProductsWithImages } from "@/actions";
 import { Pagination, ProductImage, Title } from "@/components";
 import { currencyFormat } from "@/utils";
+import Image from "next/image";
+
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { IoCardOutline } from "react-icons/io5";
 
 interface Props {
   searchParams: {
@@ -12,8 +16,7 @@ interface Props {
   };
 }
 
-// https://tailwindcomponents.com/component/hoverable-table
-export default async function AdminProductsPage({ searchParams }: Props) {
+export default async function OrdersPage({ searchParams }: Props) {
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
 
   const { products, currentPage, totalPages } =
@@ -90,8 +93,8 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   <Link
-                    className="hover:underline"
                     href={`/admin/product/${product.slug}`}
+                    className="hover:underline"
                   >
                     {product.title}
                   </Link>
