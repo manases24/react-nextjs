@@ -1,22 +1,31 @@
+import { redirect } from "next/navigation";
 import { auth } from "@/auth.config";
 import { Title } from "@/components";
-import { redirect } from "next/navigation";
+import { ShowJson } from "./ui/ShowJson";
+import { ShowProfile } from "./ui/ShowProfile";
 
 export default async function ProfilePage() {
+  // Obtén la sesión del usuario
   const session = await auth();
 
   if (!session?.user) {
-    // redirect('/auth/login?returnTo=/perfil');
-    redirect("/");
+    redirect("/");  
   }
 
+  const { name, email, role, image } = session.user;
+
   return (
-    <div>
+    <div className="max-w-4xl mx-auto p-8">
       <Title title="Perfil" />
-
-      <pre>{JSON.stringify(session.user, null, 2)}</pre>
-
-      <h3 className="text-3xl mb-10">{session.user.role}</h3>
+      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        <ShowProfile
+          name={name}
+          email={email}
+          role={role}
+          image={image || ""}
+        />
+        <ShowJson session={session} />
+      </div>
     </div>
   );
 }
