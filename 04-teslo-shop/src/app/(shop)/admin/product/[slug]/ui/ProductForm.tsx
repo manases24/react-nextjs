@@ -29,7 +29,6 @@ interface FormInputs {
   tags: string;
   gender: "men" | "women" | "kid" | "unisex";
   categoryId: string;
-
   images?: FileList;
 }
 
@@ -79,6 +78,8 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append("tags", productToSave.tags);
     formData.append("categoryId", productToSave.categoryId);
     formData.append("gender", productToSave.gender);
+
+    console.log(images);
 
     if (images) {
       for (let i = 0; i < images.length; i++) {

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { Gender, Product, Size } from "@prisma/client";
 import { z } from "zod";
 import { v2 as cloudinary } from "cloudinary";
+
 cloudinary.config(process.env.CLOUDINARY_URL ?? "");
 
 const productSchema = z.object({

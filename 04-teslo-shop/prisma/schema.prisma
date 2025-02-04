@@ -30,13 +30,13 @@ enum Role {
 }
 
 model Category {
-  id      String    @id @default(nanoid())
+  id      String    @id @default(uuid())
   name    String    @unique
   Product Product[]
 }
 
 model Product {
-  id          String   @id @default(nanoid())
+  id          String   @id @default(uuid())
   title       String
   description String
   inStock     Int
@@ -66,7 +66,7 @@ model ProductImage {
 }
 
 model User {
-  id            String    @id @default(nanoid())
+  id            String    @id @default(uuid())
   name          String
   email         String    @unique
   emailVerified DateTime?
@@ -89,7 +89,7 @@ model Country {
 }
 
 model UserAddress {
-  id         String  @id @default(nanoid())
+  id         String  @id @default(uuid())
   firstName  String
   lastName   String
   address    String
@@ -108,7 +108,7 @@ model UserAddress {
 
 // Order de compras
 model Order {
-  id           String    @id @default(nanoid())
+  id           String    @id @default(uuid())
   subTotal     Float
   tax          Float
   total        Float
@@ -126,11 +126,11 @@ model Order {
   OrderItem    OrderItem[]
   OrderAddress OrderAddress?
 
-  transactionId String? // Id que va a dar el proveedor de pago (MERCADO PAGO, PAYPAL, ETC)
+  transactionId String?
 }
 
 model OrderItem {
-  id       String @id @default(nanoid())
+  id       String @id @default(uuid())
   quantity Int
   price    Float
   size     Size
@@ -144,7 +144,7 @@ model OrderItem {
 }
 
 model OrderAddress {
-  id         String  @id @default(nanoid())
+  id         String  @id @default(uuid())
   firstName  String
   lastName   String
   address    String
